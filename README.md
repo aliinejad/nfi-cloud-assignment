@@ -77,7 +77,7 @@ Below is the screenshot of the VPC diagram:
 
 Below is the screenshot of a sample billing report email:
 
-![Sample Billing Email](./images/billing_report.png)
+![Sample Billing Email](./screenshots/billing_report.png)
 
 ### Overnight EC2 Alarm
 
@@ -94,4 +94,4 @@ Below is the screenshot of a sample billing report email:
 
 Below is a screenshot of the alert email:
   
-![Alert Email](./images/overnight_ec2.png)
+![Alert Email](./screenshots/overnight_ec2.png)
