@@ -51,6 +51,34 @@ Below is the screenshot of the VPC diagram:
 
 ![VPC Diagram](./screenshots/vpc_diagram.png)
 
+### Creating custom Ubuntu AMI with Packer
+
+## Why?
+- Don't rebuild AMI every time Terraform runs
+- Packer makes consistent AMIs
+- Do it once, use many times
+
+## Packer Config File (`ubuntu-ami.json`)
+
+```json
+{
+"builders": [{
+"type": "amazon-ebs",
+"region": "us-east-1",
+"source_ami": "ami-1234567890",
+"instance_type": "t2.micro",
+"ssh_username": "ubuntu",
+"ami_name": "my-ubuntu-{{timestamp}}"
+}],
+"provisioners": [{
+"type": "shell",
+"inline": [
+"sudo apt update",
+"sudo apt upgrade -y",
+"sudo apt install -y nginx"
+]
+}]
+}
 
 ### Auto Scaling Group Behavior
 
