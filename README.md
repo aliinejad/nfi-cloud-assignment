@@ -53,12 +53,12 @@ Below is the screenshot of the VPC diagram:
 
 ### Creating custom Ubuntu AMI with Packer
 
-## Why?
+**why?**
 - Don't rebuild AMI every time Terraform runs
 - Packer makes consistent AMIs
 - Do it once, use many times
 
-## Packer Config File (`ubuntu-ami.json`)
+**Packer Config File (`ubuntu-ami.json`)**
 
 ```json
 {
