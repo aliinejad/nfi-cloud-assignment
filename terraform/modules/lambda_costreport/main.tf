@@ -52,7 +52,6 @@ resource "aws_iam_role_policy" "lambda_costreport_sns_policy" {
   })
 }
 
-# Updated SNS Topic Subscription Resource
 resource "aws_sns_topic_subscription" "email_subscription" {
   for_each  = toset(var.notification_emails)
   topic_arn = aws_sns_topic.billing_report_topic.arn

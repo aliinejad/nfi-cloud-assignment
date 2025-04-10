@@ -8,11 +8,6 @@ resource "aws_vpc" "main" {
   }
 }
 
-#########################
-# SUBNETS
-#########################
-
-# Public subnets per AZ
 resource "aws_subnet" "public" {
   count                   = length(var.availability_zones)
   vpc_id                  = aws_vpc.main.id
@@ -25,7 +20,6 @@ resource "aws_subnet" "public" {
   }
 }
 
-# Private subnets per AZ
 resource "aws_subnet" "private" {
   count             = length(var.availability_zones)
   vpc_id            = aws_vpc.main.id
@@ -37,10 +31,6 @@ resource "aws_subnet" "private" {
   }
 }
 
-#########################
-# INTERNET GATEWAY
-#########################
-
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -49,11 +39,6 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-#########################
-# NAT GATEWAY & EIP
-#########################
-
-# Elastic IP per AZ for the NAT Gateway
 resource "aws_eip" "nat_eip" {
   count = length(var.availability_zones)
   vpc   = true
@@ -63,7 +48,6 @@ resource "aws_eip" "nat_eip" {
   }
 }
 
-# NAT Gateway per AZ
 resource "aws_nat_gateway" "nat" {
   count         = length(var.availability_zones)
   allocation_id = aws_eip.nat_eip[count.index].id
@@ -76,11 +60,6 @@ resource "aws_nat_gateway" "nat" {
   depends_on = [aws_internet_gateway.igw]
 }
 
-#########################
-# ROUTE TABLES & ASSOCIATIONS
-#########################
-
-# Public Route Table (shared by all public subnets)
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.main.id
 
@@ -94,14 +73,12 @@ resource "aws_route_table" "public_rt" {
   }
 }
 
-# Associate each public subnet with the public route table
 resource "aws_route_table_association" "public_assoc" {
   count          = length(var.availability_zones)
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public_rt.id
 }
 
-# Private Route Tables (one per AZ)
 resource "aws_route_table" "private_rt" {
   count  = length(var.availability_zones)
   vpc_id = aws_vpc.main.id
@@ -116,7 +93,6 @@ resource "aws_route_table" "private_rt" {
   }
 }
 
-# Associate each private subnet with its corresponding private route table
 resource "aws_route_table_association" "private_assoc" {
   count          = length(var.availability_zones)
   subnet_id      = aws_subnet.private[count.index].id
