@@ -17,11 +17,11 @@ module "autoscaling" {
 }
 
 module "lambda_costreport" {
-  source             = "./modules/lambda_costreport"
+  source              = "./modules/lambda_costreport"
   notification_emails = var.notification_emails
 }
 
 module "overnight_alarm" {
-  source                         = "./modules/overnight_alarm"
-  overnight_notification_emails   = var.overnight_notification_emails
+  source                        = "./modules/overnight_alarm"
+  overnight_notification_emails = var.overnight_notification_emails
 }
