@@ -80,12 +80,20 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attach" {
   policy_arn = aws_iam_policy.lambda_policy.arn
 }
 
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../lambda-function/asg-scaledown"
+  output_path = "${path.module}/lambda_function.zip"
+}
+
 resource "aws_lambda_function" "scale_down_function" {
   function_name = "asg_scale_down_function"
   role          = aws_iam_role.lambda_role.arn
-  handler       = "index.handler"
+  handler       = "asg_scale_down_function.handler"
   runtime       = "python3.8"
-  filename      = "lambda_scale_down.zip"
+  filename         = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  timeout          = 30
 
   environment {
     variables = {
