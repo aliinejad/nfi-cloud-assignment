@@ -31,8 +31,9 @@ variable "custom_ami_id" {
   type = string
 }
 
-variable "overnight_notification_email" {
-  type = string
+variable "overnight_notification_emails" {
+  description = "List of email addresses to receive notifications"
+  type        = list(string)
 }
 variable "notification_emails" {
   description = "List of email addresses to receive notifications"

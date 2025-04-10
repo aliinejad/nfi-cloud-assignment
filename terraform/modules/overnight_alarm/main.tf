@@ -1,15 +1,14 @@
-# Module: terraform/modules/overnight_alarm/main.tf
-
 # Create an SNS Topic for overnight notifications
 resource "aws_sns_topic" "overnight_alarm_topic" {
   name = "overnight-alarm-topic"
 }
 
-# Create an email subscription for the SNS topic (email to be passed in via variable)
+# Create email subscriptions for the SNS topic (using a list of emails)
 resource "aws_sns_topic_subscription" "overnight_email_sub" {
+  for_each  = toset(var.overnight_notification_emails)
   topic_arn = aws_sns_topic.overnight_alarm_topic.arn
   protocol  = "email"
-  endpoint  = var.overnight_notification_email
+  endpoint  = each.value
 }
 
 resource "aws_iam_role_policy" "overnight_sns_publish_policy" {
@@ -26,7 +25,6 @@ resource "aws_iam_role_policy" "overnight_sns_publish_policy" {
     ]
   })
 }
-
 
 # IAM Role for the Overnight Checker Lambda function
 resource "aws_iam_role" "overnight_lambda_role" {

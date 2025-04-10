@@ -23,5 +23,5 @@ module "lambda_costreport" {
 
 module "overnight_alarm" {
   source                         = "./modules/overnight_alarm"
-  overnight_notification_email   = var.overnight_notification_email
+  overnight_notification_emails   = var.overnight_notification_emails
 }
