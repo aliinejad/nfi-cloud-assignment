@@ -78,7 +78,7 @@ Below is the screenshot of the VPC diagram:
 "sudo apt install -y nginx"
 ]
 }]
-}
+}```
 
 ### Auto Scaling Group Behavior
 
