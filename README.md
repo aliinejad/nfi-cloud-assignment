@@ -83,11 +83,16 @@ Below is the screenshot of the VPC diagram:
 
 ### Auto Scaling Group Behavior
 
-- **Morning Scaling (6:00 AM):**  
-  At the beginning of the day, the auto scaling group launches at least two EC2 instances using the custom AMI created in step 2.
+- **Morning Scaling Trigger:**  
+  A scheduled action at 6:00 AM scales up the auto scaling group, launching at least two EC2 instances using the custom AMI created in step 2.
 
-- **Evening Scaling (6:00 PM):**  
-  At the end of the day, the auto scaling group terminates all running EC2 instances.
+- **Evening Scaling Trigger:**  
+  At 6:00 PM, a scheduled EventBridge rule invokes a Lambda function to assess running instances.
+
+- **Conditional Termination Execution:**  
+  The Lambda function reviews each instance and terminates only those that are idle, ensuring that busy instances continue running.
+
+> **Note:** The `is_instance_idle` function currently always returns true for simplicity due to timing. In a production environment, this function can be enhanced to include business logic or API integrations to perform more complex checks before determining if an instance should be terminated.
 
 
 ### Billing Report and Notification
