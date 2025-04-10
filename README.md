@@ -64,7 +64,7 @@ Below is the screenshot of the VPC diagram:
 {
 "builders": [{
 "type": "amazon-ebs",
-"region": "us-east-1",
+"region": "ec-central-1",
 "source_ami": "ami-1234567890",
 "instance_type": "t2.micro",
 "ssh_username": "ubuntu",
